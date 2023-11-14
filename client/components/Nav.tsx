@@ -15,7 +15,8 @@ function Nav() {
   const handleSignIn = () => {
     console.log('sign in')
   }
-
+// if authenticated appears to be very specific conditionals for 
+// authentication which wrap around the elements which we want to see or not
   return (
     <>
       <NavGroup>

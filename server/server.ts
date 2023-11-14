@@ -10,8 +10,12 @@ const __dirname = Path.dirname(__filename)
 const server = express()
 
 server.use(express.json())
+
+//is this the linking of the public folder images??
 server.use(express.static(Path.join(__dirname, 'public')))
 
+
+///this is the link to the routes
 server.use('/api/v1/fruits', fruitRoutes)
 
 server.get('*', (req, res) => {

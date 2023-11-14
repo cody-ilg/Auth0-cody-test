@@ -1,3 +1,5 @@
+// this document grabs data from the backend using HTTP requests
+
 import request from 'superagent'
 import { Fruit, FruitData } from '../models/fruit.ts'
 

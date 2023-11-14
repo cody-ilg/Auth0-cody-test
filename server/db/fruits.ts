@@ -1,3 +1,5 @@
+// this file contains all the database functions
+
 import connection from './connection.ts'
 import { Fruit, FruitSnakeCase, FruitData } from '../../models/fruit.ts'
 
@@ -52,6 +54,8 @@ export async function deleteFruit(id: number, db = connection) {
   return db('fruits').where({ id }).delete()
 }
 
+
+// it connects user id to the fruit so that the only fruits the user can edit as the ones they made
 export async function userCanEdit(
   fruitId: number,
   auth0Id: string,
