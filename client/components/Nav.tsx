@@ -3,12 +3,11 @@ import { NavGroup, NavButton } from './Styled.tsx'
 import { useAuth0 } from '@auth0/auth0-react'
 
 function Nav() {
-  // TODO: call the useAuth0 hook and destructure user, logout, and loginWithRedirect
-  const { logout, loginWithRedirect } = useAuth0()
-  // TODO: replace placeholder user object with the one from auth0
-  const user = {
-    nickname: 'Sofia',
-  }
+  // DONE: call the useAuth0 hook and destructure user, logout, and loginWithRedirect
+  const { user, logout, loginWithRedirect } = useAuth0()
+  // DONE: replace placeholder user object with the one from auth0
+
+  //console.log(user)
 
   const handleSignOut = () => {
     logout()
@@ -23,7 +22,12 @@ function Nav() {
       <NavGroup>
         <IfAuthenticated>
           <NavButton onClick={handleSignOut}>Sign out</NavButton>
-          {user && <p>Signed in as: {user?.nickname}</p>}
+          {user && (
+            <>
+              <p>Signed in as: {user?.nickname}</p>
+              <img src={user?.picture} alt="avatar" />
+            </>
+          )}
         </IfAuthenticated>
         <IfNotAuthenticated>
           <NavButton onClick={handleSignIn}>Sign in</NavButton>
