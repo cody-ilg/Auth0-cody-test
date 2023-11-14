@@ -10,6 +10,7 @@ function Nav() {
   // }
 
   const { user, logout, loginWithRedirect } = useAuth0()
+  console.log(user)
 
   const handleSignOut = () => {
     // console.log('sign out')
