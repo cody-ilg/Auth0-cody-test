@@ -7,11 +7,13 @@ function Nav() {
   // TODO: replace placeholder user object with the one from auth0
   const authentication = useAuth0()
 
-  const user = authentication.user
+  let user = authentication.user
 
-  // const user = {
-  //   nickname: 'john.doe',
-  // }
+  user = {
+    nickname: user?.nickname,
+    email: user?.email,
+    img: user?.picture,
+  }
 
   const handleSignOut = () => {
     // console.log('sign out')
