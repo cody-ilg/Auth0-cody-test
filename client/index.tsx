@@ -14,13 +14,13 @@ root.render(
    * Auth0Provider is a component that has a hook that provides
    * all authentication operations
    *
-   * TODO: replace the empty strings below with your own domain, clientId, and audience
+   * DONE: replace the empty strings below with your own domain, clientId, and audience
    */
   <Auth0Provider
-    domain=""
-    clientId=""
+    domain="roa-2023-sofia.au.auth0.com"
+    clientId="Z9xKDCPkHH5w8E772WEYONIqX1qqtNDJ"
     redirectUri={window.location.origin}
-    audience=""
+    audience="https://fruits/api"
   >
     <QueryClientProvider client={queryClient}>
       <RouterProvider router={router} />
