@@ -7,6 +7,6 @@ export default function PrivateUser(props:Props){
  
     const { userId, children } = props
     const { user } = useAuth0()
-    return userId == user?.sub? <>{children}</> : null
-    
+    return userId == user?.sub ? <>{children}</> : null
+
 }
