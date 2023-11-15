@@ -3,7 +3,6 @@ import { Auth0Provider } from '@auth0/auth0-react'
 import { createBrowserRouter, RouterProvider } from 'react-router-dom'
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
 import { routes } from './routes.tsx'
-
 const queryClient = new QueryClient()
 
 const router = createBrowserRouter(routes)
@@ -17,10 +16,10 @@ root.render(
    * TODO: replace the empty strings below with your own domain, clientId, and audience
    */
   <Auth0Provider
-    domain=""
-    clientId=""
+    domain="https://tristan-bulmer-roa-2023.au.auth0.com"
+    clientId="65541d6cfa8fa3627827cc21"
     redirectUri={window.location.origin}
-    audience=""
+    audience="https://auth-demo/api"
   >
     <QueryClientProvider client={queryClient}>
       <RouterProvider router={router} />
