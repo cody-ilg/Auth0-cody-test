@@ -6,6 +6,9 @@ import AddFruitForm from './AddFruit.tsx'
 import { ErrorMessage } from './Styled.tsx'
 import { useFruits } from '../hooks.ts'
 
+import { getAccessTokenSilently } from '@auth0/auth0-react'
+import { addFruit, updateFruit, deleteFruit } from '../api'
+
 type FormState =
   | {
       selectedFruit: Fruit
@@ -42,24 +45,27 @@ function Fruits() {
     onError: handleError,
   }
 
-  const handleAdd = (fruit: FruitData) => {
+  const handleAdd = async (fruit: FruitData) => {
     // TODO: use getAccessTokenSilently to get an access token
-
+    const token = await getAccessTokenSilently();
     // TODO: pass access token to mutate function
+    addFruit({fruit: fruit, token: token})
     fruits.add.mutate({ fruit, token: 'token' }, mutationOptions)
   }
 
-  const handleUpdate = (fruit: Fruit) => {
+  const handleUpdate = async (fruit: Fruit) => {
     // TODO: use getAccessTokenSilently to get an access token
-
+    const token = await getAccessTokenSilently();
     // TODO: pass access token to mutate function
+    updateFruit({fruit: fruit, token: token})
     fruits.update.mutate({ fruit, token: 'token' }, mutationOptions)
   }
 
-  const handleDeleteFruit = (id: number) => {
+  const handleDeleteFruit = async (id: number) => {
     // TODO: use getAccessTokenSilently to get an access token
-
+    const token = await getAccessTokenSilently();
     // TODO: pass access token to mutate function
+    deleteFruit({id , token: token})
     fruits.delete.mutate({ id, token: 'token' }, mutationOptions)
   }
 
