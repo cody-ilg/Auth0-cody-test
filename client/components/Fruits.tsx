@@ -1,10 +1,10 @@
 import { Fruit, FruitData } from '../../models/fruit.ts'
-
 import { useState } from 'react'
 import SelectedFruitForm from './SelectedFruit.tsx'
 import AddFruitForm from './AddFruit.tsx'
 import { ErrorMessage } from './Styled.tsx'
 import { useFruits } from '../hooks.ts'
+import { useAuth0 } from '@auth0/auth0-react'
 
 type FormState =
   | {
@@ -22,6 +22,7 @@ function Fruits() {
     selectedFruit: null,
     show: 'none',
   })
+
   const fruits = useFruits()
 
   const handleMutationSuccess = () => {
@@ -42,25 +43,27 @@ function Fruits() {
     onError: handleError,
   }
 
-  const handleAdd = (fruit: FruitData) => {
+  const { getAccessTokenSilently } = useAuth0()
+  const handleAdd = async (fruit: FruitData) => {
     // TODO: use getAccessTokenSilently to get an access token
 
+    const token = await getAccessTokenSilently()
     // TODO: pass access token to mutate function
-    fruits.add.mutate({ fruit, token: 'token' }, mutationOptions)
+    fruits.add.mutate({ fruit, token: token }, mutationOptions)
   }
 
-  const handleUpdate = (fruit: Fruit) => {
+  const handleUpdate = async (fruit: Fruit) => {
     // TODO: use getAccessTokenSilently to get an access token
-
+    const token = await getAccessTokenSilently()
     // TODO: pass access token to mutate function
-    fruits.update.mutate({ fruit, token: 'token' }, mutationOptions)
+    fruits.update.mutate({ fruit, token: token }, mutationOptions)
   }
 
-  const handleDeleteFruit = (id: number) => {
+  const handleDeleteFruit = async (id: number) => {
     // TODO: use getAccessTokenSilently to get an access token
-
+    const token = await getAccessTokenSilently()
     // TODO: pass access token to mutate function
-    fruits.delete.mutate({ id, token: 'token' }, mutationOptions)
+    fruits.delete.mutate({ id, token: token }, mutationOptions)
   }
 
   const hideError = () => {
