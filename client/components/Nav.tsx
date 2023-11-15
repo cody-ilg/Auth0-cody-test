@@ -7,7 +7,6 @@ function Nav() {
   // USER: This captures the users information (such as a username), from the result of the useAuth0 hook
   // LOGOUT: It logs the user out from their username - function provided by useAuth0
   // LOGINWITHREDIRECT: This initiates the authentication process, and often redirects the user to the login page.
-  user = { useAuth0 }
 
   const handleSignOut = () => {
     logout()
