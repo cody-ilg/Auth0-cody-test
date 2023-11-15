@@ -1,5 +1,5 @@
 import { Fruit, FruitData } from '../../models/fruit.ts'
-
+import { useAuth0 } from '@auth0/auth0-react'
 import { useState } from 'react'
 import SelectedFruitForm from './SelectedFruit.tsx'
 import AddFruitForm from './AddFruit.tsx'
@@ -41,19 +41,19 @@ function Fruits() {
     onSuccess: handleMutationSuccess,
     onError: handleError,
   }
-
-  const handleAdd = (fruit: FruitData) => {
+  const { getAccessTokenSilently} = useAuth0()
+  const handleAdd = async (fruit: FruitData) => {
     // TODO: use getAccessTokenSilently to get an access token
-
+    const token = await getAccessTokenSilently()
     // TODO: pass access token to mutate function
-    fruits.add.mutate({ fruit, token: 'token' }, mutationOptions)
+    fruits.add.mutate({ fruit, token: token }, mutationOptions)
   }
 
-  const handleUpdate = (fruit: Fruit) => {
+  const handleUpdate = async(fruit: Fruit) => {
     // TODO: use getAccessTokenSilently to get an access token
-
+    const token = await getAccessTokenSilently()
     // TODO: pass access token to mutate function
-    fruits.update.mutate({ fruit, token: 'token' }, mutationOptions)
+    fruits.update.mutate({ fruit, token: token }, mutationOptions)
   }
 
   const handleDeleteFruit = (id: number) => {
