@@ -20,10 +20,10 @@ interface AddFruitFunction {
 }
 export async function addFruit({
   fruit,
-  token,
+  token: token,
 }: AddFruitFunction): Promise<Fruit> {
   await sleep(1500)
-
+  console.log('token arrived: ', token)
   return request
     .post(`${rootUrl}/fruits`)
     .set('Authorization', `Bearer ${token}`)
@@ -38,7 +38,7 @@ interface UpdateFruitFunction {
 }
 export async function updateFruit({
   fruit,
-  token,
+  token: token,
 }: UpdateFruitFunction): Promise<Fruit> {
   await sleep(1500)
 
@@ -56,7 +56,7 @@ interface DeleteFruitFunction {
 }
 export async function deleteFruit({
   id,
-  token,
+  token: token,
 }: DeleteFruitFunction): Promise<void> {
   await sleep(1500)
 
