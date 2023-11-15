@@ -24,6 +24,7 @@ function Fruits() {
     show: 'none',
   })
   const fruits = useFruits()
+  const { getAccessTokenSilently } = useAuth0()
 
   const handleMutationSuccess = () => {
     handleCloseForm()
@@ -42,13 +43,12 @@ function Fruits() {
     onSuccess: handleMutationSuccess,
     onError: handleError,
   }
-  const { getAccessTokenSilently } = useAuth0()
 
   const handleAdd = async (fruit: FruitData) => {
     try {
       const token = await getAccessTokenSilently()
 
-      await fruits.add.mutate({ fruit, token }, mutationOptions)
+      fruits.add.mutate({ fruit, token }, mutationOptions)
     } catch (error) {
       console.error('This fruit was not destined for mortals:', error)
       setError('Error adding fruit')
@@ -59,7 +59,7 @@ function Fruits() {
     try {
       const token = await getAccessTokenSilently()
 
-      await fruits.update.mutate({ fruit, token }, mutationOptions)
+      fruits.update.mutate({ fruit, token }, mutationOptions)
     } catch (error) {
       console.error('Updating a fruit is impossible, scum:', error)
       setError('Error updating fruit')
@@ -70,7 +70,7 @@ function Fruits() {
     try {
       const token = await getAccessTokenSilently()
 
-      await fruits.delete.mutate({ id, token }, mutationOptions)
+      fruits.delete.mutate({ id, token }, mutationOptions)
     } catch (error) {
       console.error(
         'You wish for this gift to vanish? I will destroy your family, serf:',
