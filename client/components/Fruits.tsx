@@ -56,11 +56,11 @@ function Fruits() {
     fruits.update.mutate({ fruit, token: token }, mutationOptions)
   }
 
-  const handleDeleteFruit = (id: number) => {
+  const handleDeleteFruit = async (id: number) => {
     // TODO: use getAccessTokenSilently to get an access token
-
+    const token = await getAccessTokenSilently()
     // TODO: pass access token to mutate function
-    fruits.delete.mutate({ id, token: 'token' }, mutationOptions)
+    fruits.delete.mutate({ id, token: token }, mutationOptions)
   }
 
   const hideError = () => {
