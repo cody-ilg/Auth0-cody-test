@@ -7,13 +7,13 @@ function Nav() {
   // TODO: replace placeholder user object with the one from auth0
   const authentication = useAuth0()
 
-  let user = authentication.user
+  const user = authentication.user
 
-  user = {
-    nickname: user?.nickname,
-    email: user?.email,
-    img: user?.picture,
-  }
+  // user = {
+  //   nickname: user?.nickname,
+  //   email: user?.email,
+  //   img: user?.picture,
+  // }
 
   const handleSignOut = () => {
     // console.log('sign out')
@@ -30,6 +30,9 @@ function Nav() {
         <IfAuthenticated>
           <NavButton onClick={handleSignOut}>Sign out</NavButton>
           {user && <p>Signed in as: {user?.nickname}</p>}
+          <>
+            <p>Email: {user?.email}</p>
+          </>
         </IfAuthenticated>
         <IfNotAuthenticated>
           <NavButton onClick={handleSignIn}>Sign in</NavButton>
