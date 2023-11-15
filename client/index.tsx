@@ -17,8 +17,7 @@ root.render(
    * TODO: replace the empty strings below with your own domain, clientId, and audience
    */
   <Auth0Provider
-    domain="
-    dev-l6dqqn32odvbsydr.au.auth0.com"
+    domain="https://dev-l6dqqn32odvbsydr.au.auth0.com"
     clientId="mcne8lCY5BHk6TcY2SV5gqM6tCDylYZC"
     redirectUri={window.location.origin}
     audience="https://fruits/api"
