@@ -1,5 +1,5 @@
 import { Fruit } from '../../models/fruit.ts'
-
+import PrivateUser from './PrivateUser.tsx'
 import { useState } from 'react'
 
 import { GridForm, ColOne, ColTwoText, Button } from './Styled.tsx'
@@ -57,19 +57,22 @@ function SelectedFruitForm({ fruit, onUpdate, onDelete, onClose }: Props) {
           value={editingGrams}
           onChange={handleTextChange}
         />
-
+      <PrivateUser userId={fruit.addedByUser}>
         <Button
           type="submit"
           disabled={editingName === '' || editingGrams === 0}
         >
+          
           Update fruit
         </Button>
         <Button type="button" onClick={handleDeleteButtonClick}>
           Delete fruit
         </Button>
+        </PrivateUser>
         <Button type="button" onClick={onClose}>
           Close
         </Button>
+        
       </GridForm>
     </>
   )
