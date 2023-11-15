@@ -5,6 +5,7 @@ import SelectedFruitForm from './SelectedFruit.tsx'
 import AddFruitForm from './AddFruit.tsx'
 import { ErrorMessage } from './Styled.tsx'
 import { useFruits } from '../hooks.ts'
+import { useAuth0 } from '@auth0/auth0-react'
 
 type FormState =
   | {
@@ -41,26 +42,42 @@ function Fruits() {
     onSuccess: handleMutationSuccess,
     onError: handleError,
   }
+  const { getAccessTokenSilently } = useAuth0()
 
-  const handleAdd = (fruit: FruitData) => {
-    // TODO: use getAccessTokenSilently to get an access token
+  const handleAdd = async (fruit: FruitData) => {
+    try {
+      const token = await getAccessTokenSilently()
 
-    // TODO: pass access token to mutate function
-    fruits.add.mutate({ fruit, token: 'token' }, mutationOptions)
+      await fruits.add.mutate({ fruit, token }, mutationOptions)
+    } catch (error) {
+      console.error('This fruit was not destined for mortals:', error)
+      setError('Error adding fruit')
+    }
   }
 
-  const handleUpdate = (fruit: Fruit) => {
-    // TODO: use getAccessTokenSilently to get an access token
+  const handleUpdate = async (fruit: Fruit) => {
+    try {
+      const token = await getAccessTokenSilently()
 
-    // TODO: pass access token to mutate function
-    fruits.update.mutate({ fruit, token: 'token' }, mutationOptions)
+      await fruits.update.mutate({ fruit, token }, mutationOptions)
+    } catch (error) {
+      console.error('Updating a fruit is impossible, scum:', error)
+      setError('Error updating fruit')
+    }
   }
 
-  const handleDeleteFruit = (id: number) => {
-    // TODO: use getAccessTokenSilently to get an access token
+  const handleDeleteFruit = async (id: number) => {
+    try {
+      const token = await getAccessTokenSilently()
 
-    // TODO: pass access token to mutate function
-    fruits.delete.mutate({ id, token: 'token' }, mutationOptions)
+      await fruits.delete.mutate({ id, token }, mutationOptions)
+    } catch (error) {
+      console.error(
+        'You wish for this gift to vanish? I will destroy your family, serf:',
+        error
+      )
+      setError('Error deleting fruit')
+    }
   }
 
   const hideError = () => {
