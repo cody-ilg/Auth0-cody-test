@@ -8,7 +8,7 @@ function Nav() {
   // TODO: replace placeholder user object with the one from auth0
   console.log(user)
   const userEmail = user ? user.email : null
-  const userName = user ? user.nickname : null
+  const userName = user ? user.name : null
   const userImg = user ? user.picture : null
 
   const myUserObj = {
@@ -18,12 +18,10 @@ function Nav() {
   }
   const handleSignOut = () => {
     logout()
-    console.log('sign out')
   }
 
   const handleSignIn = () => {
     loginWithRedirect()
-    console.log('sign in')
   }
 
   return (
