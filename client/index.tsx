@@ -17,10 +17,10 @@ root.render(
    * TODO: replace the empty strings below with your own domain, clientId, and audience
    */
   <Auth0Provider
-    domain=""
-    clientId=""
-    redirectUri={window.location.origin}
-    audience=""
+    domain="https://anthony-m-roa-2023.au.auth0.com/"
+    clientId="anthony-m-roa-2023"
+    redirectUri=""
+    audience="https://fruits/api"
   >
     <QueryClientProvider client={queryClient}>
       <RouterProvider router={router} />
