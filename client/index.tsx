@@ -9,15 +9,9 @@ const router = createBrowserRouter(routes)
 
 const root = createRoot(document.getElementById('app') as HTMLElement)
 root.render(
-  /**
-   * Auth0Provider is a component that has a hook that provides
-   * all authentication operations
-   *
-   * TODO: replace the empty strings below with your own domain, clientId, and audience
-   */
   <Auth0Provider
-    domain="https://tristan-bulmer-roa-2023.au.auth0.com"
-    clientId="65541d6cfa8fa3627827cc21"
+    domain="tristan-bulmer-roa-2023.au.auth0.com"
+    clientId="osz3XwmVCdgIgHSsn1KF45W4LuBXjpI4"
     redirectUri={window.location.origin}
     audience="https://auth-demo/api"
   >
