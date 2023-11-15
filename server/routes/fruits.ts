@@ -24,6 +24,7 @@ router.get('/', async (req, res) => {
 router.post('/', async (req: JwtRequest, res) => {
   const { fruit } = req.body as { fruit: FruitData }
   const auth0Id = req.auth?.sub
+  console.log('This is the auth', req.auth)
 
   if (!fruit) {
     console.error('No fruit')

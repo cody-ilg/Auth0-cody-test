@@ -23,7 +23,7 @@ export async function addFruit({
   token,
 }: AddFruitFunction): Promise<Fruit> {
   await sleep(1500)
-
+  console.log(token)
   return request
     .post(`${rootUrl}/fruits`)
     .set('Authorization', `Bearer ${token}`)
