@@ -50,7 +50,7 @@ function Fruits() {
 
       fruits.add.mutate({ fruit, token }, mutationOptions)
     } catch (error) {
-      console.error('This fruit was not destined for mortals:', error)
+      console.error('This fruit was not destined for mortals, begone:', error)
       setError('Error adding fruit')
     }
   }
