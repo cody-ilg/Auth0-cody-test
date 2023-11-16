@@ -17,11 +17,11 @@ function Nav() {
 
   const handleSignOut = () => {
     // console.log('sign out')
-    const logout = authentication.logout()
+    authentication.logout()
   }
 
   const handleSignIn = () => {
-    const login = authentication.loginWithRedirect()
+    authentication.loginWithRedirect()
   }
 
   return (
