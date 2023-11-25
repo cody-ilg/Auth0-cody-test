@@ -13,6 +13,8 @@ function Nav() {
 
   const user = authenicate.user
 
+  // console.log(user)
+
   const handleSignOut = () => {
     authenicate.logout()
     console.log('sign out')
