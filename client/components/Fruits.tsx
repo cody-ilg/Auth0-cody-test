@@ -1,5 +1,6 @@
-import { Fruit, FruitData } from '../../models/fruit.ts'
+// DISCLAIMER: I USED CHATGPT TO HELP ME WITH THIS STEP :D
 
+import { Fruit, FruitData } from '../../models/fruit.ts'
 import { useState } from 'react'
 import SelectedFruitForm from './SelectedFruit.tsx'
 import AddFruitForm from './AddFruit.tsx'
@@ -42,25 +43,40 @@ function Fruits() {
     onError: handleError,
   }
 
-  const handleAdd = (fruit: FruitData) => {
-    // TODO: use getAccessTokenSilently to get an access token
+  const handleAdd = async (fruit: FruitData) => {
+    try {
+      // use getAccessTokenSilently to get an access token
+      const accessToken = await getAccessTokenSilently()
 
-    // TODO: pass access token to mutate function
-    fruits.add.mutate({ fruit, token: 'token' }, mutationOptions)
+      // pass access token to mutate function
+      fruits.add.mutate({ fruit, token: accessToken }, mutationOptions)
+    } catch (error) {
+      console.error('Error', error)
+    }
   }
 
-  const handleUpdate = (fruit: Fruit) => {
-    // TODO: use getAccessTokenSilently to get an access token
+  const handleUpdate = async (fruit: Fruit) => {
+    try {
+      // use getAccessTokenSilently to get an access token
+      const accessToken = await getAccessTokenSilently()
 
-    // TODO: pass access token to mutate function
-    fruits.update.mutate({ fruit, token: 'token' }, mutationOptions)
+      // pass access token to mutate function
+      fruits.update.mutate({ fruit, token: accessToken }, mutationOptions)
+    } catch (error) {
+      console.error('Error', error)
+    }
   }
 
-  const handleDeleteFruit = (id: number) => {
-    // TODO: use getAccessTokenSilently to get an access token
+  const handleDeleteFruit = async (id: number) => {
+    try {
+      // use getAccessTokenSilently to get an access token
+      const accessToken = await getAccessTokenSilently()
 
-    // TODO: pass access token to mutate function
-    fruits.delete.mutate({ id, token: 'token' }, mutationOptions)
+      // pass access token to mutate function
+      fruits.delete.mutate({ id, token: accessToken }, mutationOptions)
+    } catch (error) {
+      console.error('Error', error)
+    }
   }
 
   const hideError = () => {
