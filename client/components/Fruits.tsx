@@ -5,6 +5,7 @@ import SelectedFruitForm from './SelectedFruit.tsx'
 import AddFruitForm from './AddFruit.tsx'
 import { ErrorMessage } from './Styled.tsx'
 import { useFruits } from '../hooks.ts'
+import { useAuth0 } from '@auth0/auth0-react'
 
 type FormState =
   | {
@@ -23,6 +24,7 @@ function Fruits() {
     show: 'none',
   })
   const fruits = useFruits()
+  const { getAccessTokenSilently } = useAuth0()
 
   const handleMutationSuccess = () => {
     handleCloseForm()
@@ -42,25 +44,40 @@ function Fruits() {
     onError: handleError,
   }
 
-  const handleAdd = (fruit: FruitData) => {
-    // TODO: use getAccessTokenSilently to get an access token
-
-    // TODO: pass access token to mutate function
-    fruits.add.mutate({ fruit, token: 'token' }, mutationOptions)
+  const handleAdd = async (fruit: FruitData) => {
+    try {
+      const token = await getAccessTokenSilently()
+      const response = await fruits.add.mutate(
+        { fruit, token },
+        mutationOptions
+      )
+    } catch (error) {
+      handleError(error)
+    }
   }
 
-  const handleUpdate = (fruit: Fruit) => {
-    // TODO: use getAccessTokenSilently to get an access token
-
-    // TODO: pass access token to mutate function
-    fruits.update.mutate({ fruit, token: 'token' }, mutationOptions)
+  const handleUpdate = async (fruit: Fruit) => {
+    try {
+      const token = await getAccessTokenSilently()
+      const response = await fruits.update.mutate(
+        { fruit, token },
+        mutationOptions
+      )
+    } catch (error) {
+      handleError(error)
+    }
   }
 
-  const handleDeleteFruit = (id: number) => {
-    // TODO: use getAccessTokenSilently to get an access token
-
-    // TODO: pass access token to mutate function
-    fruits.delete.mutate({ id, token: 'token' }, mutationOptions)
+  const handleDeleteFruit = async (id: number) => {
+    try {
+      const token = await getAccessTokenSilently()
+      const response = await fruits.delete.mutate(
+        { id, token },
+        mutationOptions
+      )
+    } catch (error) {
+      handleError(error)
+    }
   }
 
   const hideError = () => {
