@@ -47,10 +47,7 @@ function Fruits() {
   const handleAdd = async (fruit: FruitData) => {
     try {
       const token = await getAccessTokenSilently()
-      const response = await fruits.add.mutate(
-        { fruit, token },
-        mutationOptions
-      )
+      await fruits.add.mutate({ fruit, token }, mutationOptions)
     } catch (error) {
       handleError(error)
     }
@@ -59,10 +56,7 @@ function Fruits() {
   const handleUpdate = async (fruit: Fruit) => {
     try {
       const token = await getAccessTokenSilently()
-      const response = await fruits.update.mutate(
-        { fruit, token },
-        mutationOptions
-      )
+      await fruits.update.mutate({ fruit, token }, mutationOptions)
     } catch (error) {
       handleError(error)
     }
@@ -71,10 +65,7 @@ function Fruits() {
   const handleDeleteFruit = async (id: number) => {
     try {
       const token = await getAccessTokenSilently()
-      const response = await fruits.delete.mutate(
-        { id, token },
-        mutationOptions
-      )
+      await fruits.delete.mutate({ id, token }, mutationOptions)
     } catch (error) {
       handleError(error)
     }
