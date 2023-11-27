@@ -6,7 +6,7 @@ import AddFruitForm from './AddFruit.tsx'
 import { ErrorMessage } from './Styled.tsx'
 import { useFruits } from '../hooks.ts'
 
-import { useAuth0 } from '@auth0/auth0-react'
+import {useAuth0 } from '@auth0/auth0-react'
 import { addFruit, updateFruit, deleteFruit } from '../api'
 
 type FormState =
