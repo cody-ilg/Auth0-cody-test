@@ -1,18 +1,22 @@
 import { IfAuthenticated, IfNotAuthenticated } from './Authenticated.tsx'
 import { NavGroup, NavButton } from './Styled.tsx'
+import { useAuth0 } from '@auth0/auth0-react'
 
 function Nav() {
   // TODO: call the useAuth0 hook and destructure user, logout, and loginWithRedirect
+  const { user, logout, loginWithRedirect } = useAuth0()
   // TODO: replace placeholder user object with the one from auth0
-  const user = {
-    nickname: 'john.doe',
-  }
+  // const user = {
+    
+  // }
 
   const handleSignOut = () => {
+    logout()
     console.log('sign out')
   }
 
   const handleSignIn = () => {
+    loginWithRedirect()
     console.log('sign in')
   }
 
