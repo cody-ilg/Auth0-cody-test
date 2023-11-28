@@ -18,9 +18,9 @@ root.render(
    */
   <Auth0Provider
     domain="cody-ilg-roa-2023.au.auth0.com"
-    clientId="c1U4m2Tboo4OLUN6SwfzjjaA8iq4w5ky"
+    clientId="dFgIf8Ju1OaFy5X9zFnFdK2gDmlM5AYB"
     redirectUri={window.location.origin}
-    audience="hhtps://fruits/api"
+    audience="https://fruits/api"
   >
     <QueryClientProvider client={queryClient}>
       <RouterProvider router={router} />
