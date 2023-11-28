@@ -3,7 +3,6 @@ import { FruitData } from '../../models/fruit.ts'
 import checkJwt, { JwtRequest } from '../auth0.ts'
 
 import * as db from '../db/fruits.ts'
-import { ResultType } from '@remix-run/router/dist/utils'
 
 const router = express.Router()
 
