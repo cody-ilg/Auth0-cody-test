@@ -19,7 +19,7 @@ root.render(
   <Auth0Provider
     domain="anthony-m-roa-2023.au.auth0.com"
     clientId="RqmId8wQP1x9pKAE5RHbmQCHSGwO6hTV"
-    redirectUri=""
+    redirectUri={window.location.origin}
     audience="https://fruits/api"
   >
     <QueryClientProvider client={queryClient}>
