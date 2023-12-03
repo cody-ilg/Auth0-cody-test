@@ -52,6 +52,8 @@ export async function deleteFruit(id: number, db = connection) {
   return db('fruits').where({ id }).delete()
 }
 
+
+// connects user id to the fruit so the only fruits the user can edit are ones they make themselves
 export async function userCanEdit(
   fruitId: number,
   auth0Id: string,

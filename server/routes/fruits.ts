@@ -1,6 +1,6 @@
 import express from 'express'
 import { FruitData } from '../../models/fruit.ts'
-import { JwtRequest } from '../auth0.ts'
+import checkJwt, { JwtRequest } from '../auth0.ts'
 
 import * as db from '../db/fruits.ts'
 
@@ -21,16 +21,21 @@ router.get('/', async (req, res) => {
 
 // TODO: use checkJwt as middleware
 // POST /api/v1/fruits
-router.post('/', async (req: JwtRequest, res) => {
+// the request is passed through the Jwt middlewear
+router.post('/', checkJwt, async (req: JwtRequest, res) => {
   const { fruit } = req.body as { fruit: FruitData }
+  // the middleware returns a req which also has a bolean which says
+  // whether the user is authorised or not
   const auth0Id = req.auth?.sub
 
   if (!fruit) {
+    //no fruit returned
     console.error('No fruit')
     return res.status(400).send('Bad request')
   }
 
   if (!auth0Id) {
+    //more specific error message - no fruit because unauth
     console.error('No auth0Id')
     return res.status(401).send('Unauthorized')
   }
@@ -47,12 +52,12 @@ router.post('/', async (req: JwtRequest, res) => {
 
 // TODO: use checkJwt as middleware
 // PUT /api/v1/fruits
-router.put('/:id', async (req: JwtRequest, res) => {
+router.put('/:id', checkJwt, async (req: JwtRequest, res) => {
   const { fruit } = req.body as { fruit: FruitData }
   const auth0Id = req.auth?.sub
 
   const id = Number(req.params.id)
-
+  // 1. first check whether the id or fruit even exists
   if (!fruit || !id) {
     console.error('Bad Request - no fruit or id')
     return res.status(400).send('Bad request')
@@ -63,6 +68,8 @@ router.put('/:id', async (req: JwtRequest, res) => {
     return res.status(401).send('Unauthorized')
   }
 
+  //2. then try to update the fruit.
+  //   if the userCanEdit succeeds, then the db function runs
   try {
     await db.userCanEdit(id, auth0Id)
     const updatedFruit = await db.updateFruit(id, fruit)
@@ -81,9 +88,10 @@ router.put('/:id', async (req: JwtRequest, res) => {
   }
 })
 
+//-----------------------------------------------------------------
 // TODO: use checkJwt as middleware
 // DELETE /api/v1/fruits
-router.delete('/:id', async (req: JwtRequest, res) => {
+router.delete('/:id', checkJwt, async (req: JwtRequest, res) => {
   const id = Number(req.params.id)
   const auth0Id = req.auth?.sub
 
