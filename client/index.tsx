@@ -17,10 +17,10 @@ root.render(
    * TODO: replace the empty strings below with your own domain, clientId, and audience
    */
   <Auth0Provider
-    domain=""
-    clientId=""
+    domain="https://dev-1ackkh7witjzru1x.us.auth0.com"
+    clientId="ipcjUqS4hMyxTLvNhK4gnncdtYJQG78d"
     redirectUri={window.location.origin}
-    audience=""
+    audience="https://missingPurrson/api"
   >
     <QueryClientProvider client={queryClient}>
       <RouterProvider router={router} />
