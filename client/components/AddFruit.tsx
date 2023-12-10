@@ -1,61 +1,56 @@
-import { FruitData } from '../../models/fruit.ts'
+import React, { useState, ChangeEvent, FormEvent } from 'react';
+import { FruitData } from '../../models/fruit.ts';
+import { GridForm, ColOne, ColTwoText, Button } from './Styled.tsx';
 
-import { useState } from 'react'
-
-import { GridForm, ColOne, ColTwoText, Button } from './Styled.tsx'
-
-interface Props {
-  onAdd: (fruit: FruitData) => void
-  onClose: () => void
+interface AddFruitFormProps {
+  onAdd: (fruit: FruitData) => void;
+  onClose: () => void;
 }
 
-const emptyFruit: FruitData = {
+const initialFruit: FruitData = {
   name: '',
   averageGramsEach: 0,
-}
+};
 
-function AddFruitForm({ onAdd, onClose }: Props) {
-  const [newFruit, setNewFruit] = useState(emptyFruit)
+const AddFruitForm: React.FC<AddFruitFormProps> = ({ onAdd, onClose }) => {
+  const [newFruit, setNewFruit] = useState(initialFruit);
 
-  const { name: addingName, averageGramsEach: addingGrams } = newFruit
+  const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
+    const { name, value } = e.target;
+    setNewFruit((prevFruit) => ({ ...prevFruit, [name]: value }));
+  };
 
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const { name, value } = e.target
-    setNewFruit({
-      ...newFruit,
-      [name]: value,
-    })
-  }
-
-  const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
-    event.preventDefault()
-
-    onAdd(newFruit)
-  }
+  const handleSubmit = (event: FormEvent<HTMLFormElement>) => {
+    event.preventDefault();
+    onAdd(newFruit);
+  };
 
   return (
     <>
       <h2>Add new</h2>
       <GridForm onSubmit={handleSubmit}>
+        {/* Form inputs for name */}
         <ColOne htmlFor="name">Name:</ColOne>
         <ColTwoText
           type="text"
           name="name"
           id="name"
-          value={addingName}
+          value={newFruit.name}
           onChange={handleChange}
         />
 
+        {/* Form inputs for averageGramsEach */}
         <ColOne htmlFor="averageGramsEach">Average Grams Each:</ColOne>
         <ColTwoText
           type="number"
           name="averageGramsEach"
           id="averageGramsEach"
-          value={addingGrams}
+          value={newFruit.averageGramsEach}
           onChange={handleChange}
         />
 
-        <Button type="submit" disabled={addingName === '' || addingGrams === 0}>
+        {/* Submit and Close buttons */}
+        <Button type="submit" disabled={!newFruit.name || newFruit.averageGramsEach === 0}>
           Add fruit
         </Button>
         <Button type="button" onClick={onClose}>
@@ -63,7 +58,7 @@ function AddFruitForm({ onAdd, onClose }: Props) {
         </Button>
       </GridForm>
     </>
-  )
-}
+  );
+};
 
-export default AddFruitForm
+export default AddFruitForm;

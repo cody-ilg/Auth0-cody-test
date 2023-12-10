@@ -1,125 +1,130 @@
-import { Fruit, FruitData } from '../../models/fruit.ts'
+import React, { useState, useEffect } from 'react';
+import { useAuth0 } from '@auth0/auth0-react';
+import AddFruitForm from './AddFruit.tsx';
+import SelectedFruitForm from './SelectedFruit.tsx';
+import { ErrorMessage } from './Styled.tsx';
+import { useFruits } from '../hooks.ts';
 
-import { useState } from 'react'
-import SelectedFruitForm from './SelectedFruit.tsx'
-import AddFruitForm from './AddFruit.tsx'
-import { ErrorMessage } from './Styled.tsx'
-import { useFruits } from '../hooks.ts'
-import { useAuth0 } from '@auth0/auth0-react'
+interface FruitsProps {}
+
+interface MutationOptions {
+  onSuccess: () => void;
+  onError: (error: unknown) => void;
+}
 
 type FormState =
   | {
-      selectedFruit: Fruit
-      show: 'selected'
+      selectedFruit: Fruit | null;
+      show: 'selected';
     }
   | {
-      selectedFruit: null
-      show: 'add' | 'none'
-    }
+      selectedFruit: null;
+      show: 'add' | 'none';
+    };
 
-function Fruits() {
-  const { getAccessTokenSilently } = useAuth0()
+function Fruits(props: FruitsProps) {
+  const { getAccessTokenSilently } = useAuth0();
+  const [error, setError] = useState('');
+  const [form, setForm] = useState<FormState>({ selectedFruit: null, show: 'none' });
+  const fruits = useFruits();
 
-  const [error, setError] = useState('')
-  const [form, setForm] = useState<FormState>({
-    selectedFruit: null,
-    show: 'none',
-  })
-  const fruits = useFruits()
+  const mutationOptions: MutationOptions = {
+    onSuccess: () => {
+      handleCloseForm();
+      setError('');
+    },
+    onError: handleError,
+  };
 
-  const handleMutationSuccess = () => {
-    handleCloseForm()
-    setError('')
-  }
+  useEffect(() => {
+    const fetchFruits = async () => {
+      // TODO: use getAccessTokenSilently to get an access token
+      const token = await getAccessTokenSilently();
+
+      // TODO: pass access token to mutate function
+      fruits.fetch.mutate({ token }, mutationOptions);
+    };
+
+    fetchFruits();
+  }, [fruits.fetch.mutate, getAccessTokenSilently, mutationOptions]);
 
   const handleError = (error: unknown) => {
     if (error instanceof Error) {
-      setError(error.message)
+      setError(error.message);
     } else {
-      setError('Unknown error')
+      setError('Unknown error');
     }
-  }
+  };
 
-  const mutationOptions = {
-    onSuccess: handleMutationSuccess,
-    onError: handleError,
-  }
-
-  const handleAdd = async (fruit: FruitData) => {
+  const handleMutation = async (fruitAction: (params: any) => void, params: any) => {
     // TODO: use getAccessTokenSilently to get an access token
-    const token = await getAccessTokenSilently()
-    console.log(token)
-    // pass access token to mutate function
-    fruits.add.mutate({ fruit, token }, mutationOptions)
-  }
+    const token = await getAccessTokenSilently();
 
-  const handleUpdate = async (fruit: Fruit) => {
-    // TODO: use getAccessTokenSilently to get an access token
-    const token = await getAccessTokenSilently()
     // TODO: pass access token to mutate function
-    fruits.update.mutate({ fruit, token }, mutationOptions)
-  }
+    fruitAction({ ...params, token }, mutationOptions);
+  };
 
-  const handleDeleteFruit = async (id: number) => {
-    // TODO: use getAccessTokenSilently to get an access token
-    const token = await getAccessTokenSilently()
-    // TODO: pass access token to mutate function
-    fruits.delete.mutate({ id, token }, mutationOptions)
-  }
+  const handleAdd = (fruit: FruitData) => {
+    handleMutation(fruits.add.mutate, { fruit });
+  };
+
+  const handleUpdate = (fruit: Fruit) => {
+    handleMutation(fruits.update.mutate, { fruit });
+  };
+
+  const handleDeleteFruit = (id: number) => {
+    handleMutation(fruits.delete.mutate, { id });
+  };
 
   const hideError = () => {
-    setError('')
-  }
+    setError('');
+  };
 
   const handleOpenAddForm = () => {
-    setForm({ show: 'add', selectedFruit: null })
-  }
+    setForm({ show: 'add', selectedFruit: null });
+  };
 
   const handleCloseForm = () => {
-    setForm({ show: 'none', selectedFruit: null })
-  }
+    setForm({ show: 'none', selectedFruit: null });
+  };
 
   const handleSelectFruit = (fruit: Fruit) => {
-    setForm({ show: 'selected', selectedFruit: fruit })
-  }
+    setForm({ show: 'selected', selectedFruit: fruit });
+  };
 
-  if (fruits.isLoading) {
-    let failures = ''
-    if (fruits.failureCount > 0) {
-      failures = ` (failed ${fruits.failureCount} times)`
+  const renderFruitsList = () => {
+    if (fruits.isLoading) {
+      let failures = '';
+      if (fruits.failureCount > 0) {
+        failures = ` (failed ${fruits.failureCount} times)`;
+      }
+
+      return <div>Loading... {failures}</div>;
     }
 
-    return <div>Loading... {failures}</div>
-  }
+    if (fruits.status === 'success') {
+      return (
+        <ul>
+          {fruits.data.map((fruit) => (
+            <li key={fruit.id}>
+              <button onClick={() => handleSelectFruit(fruit)}>{fruit.name}</button>
+            </li>
+          ))}
+        </ul>
+      );
+    }
 
-  let fetchStatus = ''
-  if (fruits.add.isLoading) fetchStatus = 'Adding...'
-  if (fruits.update.isLoading) fetchStatus = 'Updating...'
-  if (fruits.delete.isLoading) fetchStatus = 'Deleting...'
-  if (fruits.isRefetching) fetchStatus = 'Refreshing...'
+    if (fruits.error instanceof Error) {
+      return <ErrorMessage>Failed to load fruits: {fruits.error.message}</ErrorMessage>;
+    }
 
-  if (fruits.error instanceof Error) {
-    return (
-      <ErrorMessage>Failed to load fruits: {fruits.error.message}</ErrorMessage>
-    )
-  }
+    return null;
+  };
 
   return (
     <>
-      {error !== '' && (
-        <ErrorMessage onClick={hideError}>Error: {error}</ErrorMessage>
-      )}
-      {fetchStatus !== '' && <div>{fetchStatus}</div>}
-      <ul>
-        {fruits.status === 'success' &&
-          fruits.data.map((fruit) => (
-            <li key={fruit.id}>
-              <button onClick={() => handleSelectFruit(fruit)}>
-                {fruit.name}
-              </button>
-            </li>
-          ))}
-      </ul>
+      {error !== '' && <ErrorMessage onClick={hideError}>Error: {error}</ErrorMessage>}
+      {renderFruitsList()}
       {form.show === 'add' ? (
         <AddFruitForm onAdd={handleAdd} onClose={handleCloseForm} />
       ) : (
@@ -127,7 +132,7 @@ function Fruits() {
       )}
       {form.show === 'selected' && (
         <SelectedFruitForm
-          key={form.selectedFruit.id}
+          key={form.selectedFruit?.id}
           fruit={form.selectedFruit}
           onUpdate={handleUpdate}
           onDelete={handleDeleteFruit}
@@ -135,7 +140,8 @@ function Fruits() {
         />
       )}
     </>
-  )
+  );
 }
 
-export default Fruits
+export default Fruits;
+

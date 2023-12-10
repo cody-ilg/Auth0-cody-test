@@ -1,20 +1,22 @@
-// TODO: import useAuth0 function
-import { useAuth0 } from '@auth0/auth0-react'
+import React from 'react';
+import { useAuth0 } from '@auth0/auth0-react';
 
+// Custom hook to check if the user is authenticated
 const useIsAuthenticated = () => {
-  // TODO: call the useAuth0 hook, destructure and return isAuthenticated
-  const isAuthenicated = useAuth0().isAuthenticated
-  return isAuthenicated
-}
-interface Props {
-  children: React.ReactNode
-}
-export function IfAuthenticated(props: Props) {
-  const { children } = props
-  return useIsAuthenticated() ? <>{children}</> : null
+  const { isAuthenticated } = useAuth0();
+  return isAuthenticated;
+};
+
+interface AuthWrapperProps {
+  children: React.ReactNode;
 }
 
-export function IfNotAuthenticated(props: Props) {
-  const { children } = props
-  return !useIsAuthenticated() ? <>{children}</> : null
+export function IfAuthenticated({ children }: AuthWrapperProps) {
+  const isAuthenticated = useIsAuthenticated();
+  return isAuthenticated ? <>{children}</> : null;
+}
+
+export function IfNotAuthenticated({ children }: AuthWrapperProps) {
+  const isNotAuthenticated = !useIsAuthenticated();
+  return isNotAuthenticated ? <>{children}</> : null;
 }

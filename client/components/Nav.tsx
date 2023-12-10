@@ -1,35 +1,28 @@
-import { IfAuthenticated, IfNotAuthenticated } from './Authenticated.tsx'
-import { NavGroup, NavButton } from './Styled.tsx'
-import { useAuth0 } from '@auth0/auth0-react'
+import React from 'react';
+import { createRoot } from 'react-dom/client';
+import { Auth0Provider } from '@auth0/auth0-react';
+import { createBrowserRouter, RouterProvider } from 'react-router-dom';
+import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
+import { routes } from './routes.tsx';
 
-function Nav() {
-  // TODO: call the useAuth0 hook and destructure user, logout, and loginWithRedirect
-  // TODO: replace placeholder user object with the one from auth0
-  const { logout, loginWithRedirect, user } = useAuth0()
+const queryClient = new QueryClient();
 
-  const handleSignOut = () => {
-    logout()
-  }
+const router = createBrowserRouter(routes);
 
-  const handleSignIn = () => {
-    loginWithRedirect()
-  }
-  // if authenticated appears to be very specific conditionals for
-  // authentication wraps around the elements which we want to see or not
-  return (
-    <>
-      <NavGroup>
-        <IfAuthenticated>
-          <NavButton onClick={handleSignOut}>Sign out</NavButton>
-          {user && <p>Signed in as: {user?.nickname}</p>}
-        </IfAuthenticated>
-        <IfNotAuthenticated>
-          <NavButton onClick={handleSignIn}>Sign in</NavButton>
-        </IfNotAuthenticated>
-      </NavGroup>
-      <h1>Fruit FTW!</h1>
-    </>
-  )
-}
+const root = createRoot(document.getElementById('app') as HTMLElement);
 
-export default Nav
+const Auth0Config = {
+  domain: 'dev-4stxcmoo7ww8l0fj.au.auth0.com',
+  clientId: 'Fruits App',
+  redirectUri: window.location.origin,
+  audience: 'https://fruits/api',
+};
+
+root.render(
+  <Auth0Provider {...Auth0Config}>
+    <QueryClientProvider client={queryClient}>
+      <RouterProvider router={router} />
+    </QueryClientProvider>
+  </Auth0Provider>
+);
+
