@@ -5,21 +5,23 @@ import { useAuth0 } from '@auth0/auth0-react'
 
 function Nav() {
 
-  const { user, logout, loginWithRedirect} = useAuth0()
+  const auth = useAuth0()
   // TODO: call the useAuth0 hook and destructure user, logout, and loginWithRedirect
   // TODO: replace placeholder user object with the one from auth0
   // const user = {
   //   nickname: 'john.doe',
   // }
 
+  const user = auth.user
+
   const handleSignOut = () => {
     console.log('sign out')
-    logout()
+    auth.logout()
   }
 
   const handleSignIn = () => {
     console.log('sign in')
-    loginWithRedirect()
+    auth.loginWithRedirect()
   }
 
   return (
